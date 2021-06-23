@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shop-api
+spec:
+  selector:
+    matchLabels:
+      app: shop-api
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      name: shop-api
+      labels:
+        app: shop-api
+    spec:
+      containers:
+      - name: shop-api
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: "Development"
+        image: shop-api
+        resources:
+          requests: 
+            memory: 100Mi
+            cpu: 50m
+        # pull image from remote server ? 
+        imagePullPolicy: Never
+        readinessProbe:
+          httpGet:
+            path: /WeatherForecast
+            port: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shop-api
+
+spec:
+  # This defines which pods are going to be represented by this Service
+  # The service becomes a network endpoint for either other services
+  # or maybe external users to connect to (eg browser)
+  # minikube start --extra-config=apiserver.service-node-port-range=80-30000, 
+  # port 80 can be used as well
+  selector:
+    app: shop-api
+
+  ports:
+    - name: http
+      port: 5000
+      targetPort: 5000
+      # default port range: 30000-32767
+      nodePort: 30001
+  type: NodePort
+     
+
