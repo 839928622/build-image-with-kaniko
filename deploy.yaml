@@ -35,6 +35,8 @@ spec:
                 name: user-pass
                 key: identity-connectionstring
         image: shop-api
+      imagePullSecrets:
+      - name: regcred
         # pull image from remote server ? 
         imagePullPolicy: Never
         readinessProbe:

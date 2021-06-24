@@ -1,5 +1,10 @@
 pipeline {
-   agent any
+   agent {
+      kubernetes {
+      defaultContainer "shell"
+      yamlFile "jenkins-pod.yaml"
+    }
+   }
 
    environment {
     
@@ -9,29 +14,52 @@ pipeline {
      GITCOMMITSHA = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
      SERVICE_NAME = "shop-api"
      
+     REGISTRY = "registry.cn-hangzhou.aliyuncs.com/hyper/${SERVICE_NAME}"
+
+     // credencials database connectionstring
+      withCredentials([string(credentialsId: 'StoreConnection', variable: 'StoreConnection')]) { //set SECRET with the credential content
+        
+    }
+       withCredentials([string(credentialsId: 'IdentityConnection', variable: 'IdentityConnection')]) { //set SECRET with the credential content
+        
+    }
    
    }
 
    stages {
-      stage('Preparation') {
+      // stage('Preparation') {
+      //    steps {
+      //       cleanWs()
+      //       git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
+      //    }
+      // }
+
+         stage('clean up') {
          steps {
             cleanWs()
-            git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
          }
       }
 
-      stage('Build and Push Image') {
-         steps {
-             sh 'echo current git commit is ${GITCOMMITSHA}'
-             sh 'docker image build  -t ${SERVICE_NAME}:latest -t ${SERVICE_NAME}:${GITCOMMITSHA} .'
+      stage('Build') {
+         // steps {
+         //     sh 'echo current git commit is ${GITCOMMITSHA}'
+         //     sh 'docker image build  -t ${SERVICE_NAME}:latest -t ${SERVICE_NAME}:${GITCOMMITSHA} .'
            
-         }
+         // }
+
+               steps {
+        container("kaniko") {
+           // pwd means find current working directory Dockerfile and build it 
+          sh "/kaniko/executor --context `pwd` --build-arg StoreConnection=${StoreConnection} --build-arg IdentityConnection=${IdentityConnection} --destination ${REGISTRY}:latest --destination ${REGISTRY}:${env.BRANCH_NAME.toLowerCase()}-${GITCOMMITSHA}"
+        }
+      }
       }
 
-      stage('Deploy to Cluster') {
+      stage('Deploy') {
+          when { branch "master" }
           steps {
                   sh 'kubectl apply -f deploy.yaml'
-                  sh 'kubectl set image deployments/shop-api shop-api=${SERVICE_NAME}:${GITCOMMITSHA}'
+                  sh 'kubectl set image deployments/shop-api shop-api=${REGISTRY}:${env.BRANCH_NAME.toLowerCase()}-${GITCOMMITSHA}'
                 }
       }
    }
