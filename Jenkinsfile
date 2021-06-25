@@ -17,12 +17,14 @@ pipeline {
      REGISTRY = "registry.cn-hangzhou.aliyuncs.com/hyper/${SERVICE_NAME}"
 
      // credencials database connectionstring
-      withCredentials([string(credentialsId: 'StoreConnection', variable: 'StoreConnection')]) { //set SECRET with the credential content
+     StoreConnection = credentials('StoreConnection')
+     IdentityConnection = credentials('IdentityConnection')
+   //    withCredentials([string(credentialsId: 'StoreConnection', variable: 'StoreConnection')]) { //set SECRET with the credential content
         
-    }
-       withCredentials([string(credentialsId: 'IdentityConnection', variable: 'IdentityConnection')]) { //set SECRET with the credential content
+   //  }
+   //     withCredentials([string(credentialsId: 'IdentityConnection', variable: 'IdentityConnection')]) { //set SECRET with the credential content
         
-    }
+   //  }
    
    }
 
