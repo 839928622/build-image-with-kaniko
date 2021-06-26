@@ -35,7 +35,9 @@ pipeline {
          steps {
             cleanWs()
             git credentialsId: 'GitHub', url: "https://github.com/839928622/${SERVICE_NAME}"
-            GITCOMMITSHA = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+            script {    
+                     GITCOMMITSHA = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+            }
 
          }
       }
