@@ -9,7 +9,7 @@ spec:
     - cat
     tty: true
   - name: kaniko
-    image: gcr.io/kaniko-project/executor:debug
+    image: aiotceo/kaniko-executor:v1.6.0
     command:
     - cat
     tty: true
