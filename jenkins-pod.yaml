@@ -9,9 +9,9 @@ spec:
     - cat
     tty: true
   - name: kaniko
-    image: aiotceo/kaniko-executor:v1.6.0
-    # command:
-    # - cat
+    image: 839928622/kaniko-executor:debug
+    command:
+    - cat
     tty: true
     volumeMounts:
     - name: kaniko-secret
