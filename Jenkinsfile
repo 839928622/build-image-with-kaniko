@@ -19,6 +19,7 @@ pipeline {
      // credencials database connectionstring
      StoreConnection = credentials('StoreConnection')
      IdentityConnection = credentials('IdentityConnection')
+     GitHub = credentials('GitHub')
    //    withCredentials([string(credentialsId: 'StoreConnection', variable: 'StoreConnection')]) { //set SECRET with the credential content
         
    //  }
@@ -52,7 +53,7 @@ pipeline {
                steps {
         container("kaniko") {
            // pwd means find current working directory Dockerfile and build it 
-          sh "/kaniko/executor --context `pwd` --build-arg StoreConnection=${StoreConnection} --build-arg IdentityConnection=${IdentityConnection} --destination ${REGISTRY}:latest --destination ${REGISTRY}:${env.BRANCH_NAME.toLowerCase()}-${GITCOMMITSHA}"
+          sh "/kaniko/executor --context git://${GitHub}@github.com/839928622/build-image-with-kaniko.git --build-arg StoreConnection=${StoreConnection} --build-arg IdentityConnection=${IdentityConnection} --destination ${REGISTRY}:latest --destination ${REGISTRY}:${env.BRANCH_NAME.toLowerCase()}-${GITCOMMITSHA}"
         }
       }
       }
