@@ -30,25 +30,21 @@ pipeline {
    }
 
    stages {
-      // stage('Preparation') {
-      //    steps {
-      //       cleanWs()
-      //       git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
-      //    }
-      // }
-
-         stage('clean up') {
+      stage('Preparation') {
          steps {
             cleanWs()
+            git credentialsId: 'GitHub', url: "https://github.com/839928622/${SERVICE_NAME}"
          }
       }
 
+
+
       stage('Build') {
-         // steps {
-         //     sh 'echo current git commit is ${GITCOMMITSHA}'
-         //     sh 'docker image build  -t ${SERVICE_NAME}:latest -t ${SERVICE_NAME}:${GITCOMMITSHA} .'
+         steps {
+             sh 'echo current git commit is ${GITCOMMITSHA}'
+            //  sh 'docker image build  -t ${SERVICE_NAME}:latest -t ${SERVICE_NAME}:${GITCOMMITSHA} .'
            
-         // }
+         }
 
                steps {
         container("kaniko") {
