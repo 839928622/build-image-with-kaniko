@@ -34,7 +34,7 @@ pipeline {
       stage('Preparation') {
          steps {
             cleanWs()
-            git credentialsId: 'GitHub', url: "https://github.com/839928622/${SERVICE_NAME}"
+            git credentialsId: 'GitHub', url: "https://github.com/839928622/build-image-with-kaniko.git"
             script {    
                      GITCOMMITSHA = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
             }
