@@ -40,14 +40,10 @@ pipeline {
 
 
       stage('Build') {
-         steps {
-             sh 'echo current git commit is ${GITCOMMITSHA}'
-            //  sh 'docker image build  -t ${SERVICE_NAME}:latest -t ${SERVICE_NAME}:${GITCOMMITSHA} .'
-           
-         }
 
                steps {
         container("kaniko") {
+           sh 'echo current git commit is ${GITCOMMITSHA}'
            // pwd means find current working directory Dockerfile and build it 
           sh "/kaniko/executor --context git://${GitHub}@github.com/839928622/build-image-with-kaniko.git --build-arg StoreConnection=${StoreConnection} --build-arg IdentityConnection=${IdentityConnection} --destination ${REGISTRY}:latest --destination ${REGISTRY}:${env.BRANCH_NAME.toLowerCase()}-${GITCOMMITSHA}"
         }
