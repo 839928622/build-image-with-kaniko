@@ -22,6 +22,9 @@ RUN dotnet build -c release --no-restore
 # db migration
 WORKDIR /source
 
+RUN dotnet tool install --global dotnet-ef --version 5.0.7
+# https://github.com/dotnet/dotnet-docker/issues/1658
+ENV PATH="${PATH}:/root/.dotnet/tools"
 RUN dotnet ef database update  --connection $StoreConnection --project Infrastructure --startup-project API --context StoreContext
 
 RUN dotnet ef database update  --connection $IdentityConnection --project Infrastructure --startup-project API --context AppIdentityDbContext
