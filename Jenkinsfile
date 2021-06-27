@@ -12,7 +12,6 @@ pipeline {
      // get curretn commit sha, command 'git rev-parse HEAD' return full sha
      // if you wanna push image to dockerhub, image name must be unique
      // GITCOMMITSHA = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-     GITCOMMITSHA = ''
      SERVICE_NAME = "shop-api"
      
      REGISTRY = "registry.cn-hangzhou.aliyuncs.com/hyper/${SERVICE_NAME}"
@@ -31,16 +30,16 @@ pipeline {
    }
 
    stages {
-      stage('Preparation') {
-         steps {
-            cleanWs()
-            git credentialsId: 'GitHub', url: "https://github.com/839928622/build-image-with-kaniko.git"
-            script {    
-                     GITCOMMITSHA = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-            }
+      // stage('Preparation') {
+      //    steps {
+      //       cleanWs()
+      //       git credentialsId: 'GitHub', url: "https://github.com/839928622/build-image-with-kaniko.git"
+      //       script {    
+      //                GITCOMMITSHA = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+      //       }
 
-         }
-      }
+      //    }
+      // }
 
 
 
@@ -50,7 +49,7 @@ pipeline {
         container("kaniko") {
            sh 'echo current git commit is ${GITCOMMITSHA}'
            // pwd means find current working directory Dockerfile and build it 
-          sh "/kaniko/executor --context git://${GitHub}@github.com/839928622/build-image-with-kaniko.git --build-arg StoreConnection=${StoreConnection} --build-arg IdentityConnection=${IdentityConnection} --destination ${REGISTRY}:latest --destination ${REGISTRY}:${env.BRANCH_NAME.toLowerCase()}-${GITCOMMITSHA}"
+          sh "/kaniko/executor --context git://${GitHub}@github.com/839928622/build-image-with-kaniko.git --build-arg StoreConnection=${StoreConnection} --build-arg IdentityConnection=${IdentityConnection} --destination ${REGISTRY}:latest --destination ${REGISTRY}:${env.BRANCH_NAME.toLowerCase()}-$BUILD_NUMBER"
         }
       }
       }
@@ -59,7 +58,7 @@ pipeline {
           when { branch "master" }
           steps {
                   sh 'kubectl apply -f deploy.yaml'
-                  sh 'kubectl set image deployments/shop-api shop-api=${REGISTRY}:${env.BRANCH_NAME.toLowerCase()}-${GITCOMMITSHA}'
+                  sh 'kubectl set image deployments/shop-api shop-api=${REGISTRY}:${env.BRANCH_NAME.toLowerCase()}-$BUILD_NUMBER'
                 }
       }
    }
