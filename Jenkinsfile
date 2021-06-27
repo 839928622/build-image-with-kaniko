@@ -54,7 +54,7 @@ pipeline {
       container("kaniko") {
            // pwd means find current working directory Dockerfile and build it 
            // Using single-quotes instead of double-quotes when referencing these sensitive environment variables prevents this type of leaking.
-           sh('/kaniko/executor --context git://${GitHub_PSW}@github.com/839928622/build-image-with-kaniko.git --build-arg StoreConnection=${StoreConnection} --build-arg IdentityConnection=${IdentityConnection} --destination ${REGISTRY}:latest --destination ${REGISTRY}:${env.BRANCH_NAME.toLowerCase()}-${BUILD_NUMBER}')
+           sh('/kaniko/executor --context git://$GitHub_PSW@github.com/839928622/build-image-with-kaniko.git --build-arg StoreConnection=$StoreConnection --build-arg IdentityConnection=$IdentityConnection --destination ${REGISTRY}:latest --destination ${REGISTRY}:${env.BRANCH_NAME.toLowerCase()}-${BUILD_NUMBER}')
         }
 }
      
