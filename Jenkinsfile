@@ -49,7 +49,7 @@ pipeline {
         container("kaniko") {
            sh 'echo current git commit is ${GITCOMMITSHA}'
            // pwd means find current working directory Dockerfile and build it 
-          sh "/kaniko/executor --context git://${GitHub}@github.com/839928622/build-image-with-kaniko.git --build-arg StoreConnection=${StoreConnection} --build-arg IdentityConnection=${IdentityConnection} --destination ${REGISTRY}:latest --destination ${REGISTRY}:${env.BRANCH_NAME.toLowerCase()}-$BUILD_NUMBER"
+          sh "/kaniko/executor --context git://${GitHub}@github.com/839928622/build-image-with-kaniko.git --build-arg StoreConnection=${StoreConnection} --build-arg IdentityConnection=${IdentityConnection} --destination ${REGISTRY}:latest --destination ${REGISTRY}:${env.BRANCH_NAME.toLowerCase()}-${BUILD_NUMBER}"
         }
       }
       }
@@ -58,7 +58,7 @@ pipeline {
           when { branch "master" }
           steps {
                   sh 'kubectl apply -f deploy.yaml'
-                  sh 'kubectl set image deployments/shop-api shop-api=${REGISTRY}:${env.BRANCH_NAME.toLowerCase()}-$BUILD_NUMBER'
+                  sh 'kubectl set image deployments/shop-api shop-api=${REGISTRY}:${env.BRANCH_NAME.toLowerCase()}-${BUILD_NUMBER}'
                 }
       }
    }
