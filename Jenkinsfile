@@ -47,7 +47,7 @@ pipeline {
 
                steps {
                   withCredentials([
-    usernamePassword(credentialsId: GitHub, usernameVariable: 'GitHub_USR', passwordVariable: 'GitHub_PSW'),
+    usernamePassword(credentialsId: 'GitHub', usernameVariable: 'GitHub_USR', passwordVariable: 'GitHub_PSW'),
     string(credentialsId: 'StoreConnection', variable: 'StoreConnection'),
     string(credentialsId: 'IdentityConnection', variable: 'IdentityConnection'),
 ]){
