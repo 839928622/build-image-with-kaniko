@@ -8,6 +8,7 @@ spec:
     command:
     - cat
     tty: true
+    imagePullPolicy: IfNotPresent
   - name: kaniko
     image: 839928622/kaniko-executor:debug
     command:
@@ -16,11 +17,13 @@ spec:
     volumeMounts:
     - name: kaniko-secret
       mountPath: /kaniko/.docker/
+    imagePullPolicy: IfNotPresent
   - name: kustomize
     image: nekottyo/kustomize-kubeval
     command:
     - cat
     tty: true
+    imagePullPolicy: IfNotPresent
   volumes:
   - name: kaniko-secret
     secret:
