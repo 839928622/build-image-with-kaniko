@@ -2,8 +2,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 # store connectionstring
 ARG StoreConnection
+
 # Identity connectionstring
-ARG IdentityConnection
+ARG IdentityConnection=""
 WORKDIR /source
 
 # copy csproj and restore as distinct layers
@@ -21,13 +22,14 @@ RUN dotnet build -c release --no-restore
 
 # db migration
 WORKDIR /source
-
 RUN dotnet tool install --global dotnet-ef --version 5.0.7
 # https://github.com/dotnet/dotnet-docker/issues/1658
 ENV PATH="${PATH}:/root/.dotnet/tools"
-RUN dotnet ef database update  --connection $StoreConnection --project Infrastructure --startup-project API --context StoreContext
+# --connection must  use double quete to mark it as valid string
+RUN dotnet ef database update --project Infrastructure --startup-project API --context StoreContext --verbose --connection "$StoreConnection" 
+RUN dotnet ef database update --project Infrastructure --startup-project API --context StoreContext --verbose --connection "$IdentityConnection"
 
-RUN dotnet ef database update  --connection $IdentityConnection --project Infrastructure --startup-project API --context AppIdentityDbContext
+
 
 
 # test stage -- exposes optional entrypoint
@@ -41,6 +43,7 @@ RUN dotnet ef database update  --connection $IdentityConnection --project Infras
 
 
 FROM build AS publish
+WORKDIR /source/API
 RUN dotnet publish -c release --no-build -o /app
 
 # final stage/image
