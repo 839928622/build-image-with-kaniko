@@ -64,8 +64,12 @@ pipeline {
       stage('Deploy') {
           when { branch "master" }
           steps {
-                  sh 'kubectl apply -f deploy.yaml'
-                  sh 'kubectl set image deployments/shop-api shop-api=${REGISTRY}:${BUILD_NUMBER}'
+                  // install kubectl
+                  sh 'curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"' 
+                  sh 'chmod u+x ./kubectl'  
+                  sh './kubectl get pods'
+                  sh './kubectl apply -f deploy.yaml'
+                  sh './kubectl set image deployments/shop-api shop-api=${REGISTRY}:${BUILD_NUMBER}'
                 }
       }
    }
