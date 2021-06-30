@@ -33,7 +33,7 @@ namespace API
 
             services.AddDbContext<StoreContext>(options =>
             {
-                options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(_configuration.GetConnectionString("StoreConnection"));
             });
             services.AddDbContext<AppIdentityDbContext>(options =>
             {
