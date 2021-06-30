@@ -30,12 +30,12 @@ spec:
           # https://github.com/kubernetes/kubernetes/issues/53201 
           - name: ConnectionStrings__StoreConnection
             valueFrom:
-              secretKeyRef:
+              configMapKeyRef:
                 name: data-configuration
                 key: database.store
           - name: ConnectionStrings__IdentityConnection
             valueFrom:
-              secretKeyRef:
+              configMapKeyRef:
                 name: data-configuration
                 key: database.identity
         readinessProbe:
