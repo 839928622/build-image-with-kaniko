@@ -20,6 +20,7 @@ spec:
     spec:
       containers:
       - name: shop-api
+      # pull image from remote server ? 
         env:
           # it should be "ConnectionStrings:DefaultConnection" 
           # For .Net Core, the current (ugly) workaround is to use double underscores
@@ -37,8 +38,6 @@ spec:
         image: shop-api
       imagePullSecrets:
       - name: regcred
-        # pull image from remote server ? 
-        imagePullPolicy: Never
         readinessProbe:
           httpGet:
             path: /WeatherForecast
