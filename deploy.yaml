@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: shop-api
-        image: shop-api
+        image: registry.cn-hangzhou.aliyuncs.com/hyper/shop-api
         imagePullPolicy: IfNotPresent
       # pull image from remote server ? 
         env:

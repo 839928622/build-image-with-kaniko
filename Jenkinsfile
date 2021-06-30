@@ -71,9 +71,9 @@ pipeline {
                   // sh 'chmod u+x ./kubectl'  
                   // sh './kubectl get pods'
           sh """
-            kubectl apply -f deploy.yaml
-            kubectl set image deployments/shop-api shop-api=${REGISTRY}:${BUILD_NUMBER}'
-          """
+               kubectl apply -f deploy.yaml
+               kubectl set image deployments/shop-api shop-api=${REGISTRY}:${BUILD_NUMBER}
+            """
         }
 
                 }
