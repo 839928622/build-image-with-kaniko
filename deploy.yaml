@@ -1,3 +1,5 @@
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,6 +22,10 @@ spec:
     spec:
       containers:
       - name: shop-api
+        image: shop-api
+        imagePullPolicy: IfNotPresent
+      imagePullSecrets:
+        - name: regcred
       # pull image from remote server ? 
         env:
           # it should be "ConnectionStrings:DefaultConnection" 
@@ -35,9 +41,7 @@ spec:
               secretKeyRef:
                 name: user-pass
                 key: identity-connectionstring
-        image: shop-api
-      imagePullSecrets:
-      - name: regcred
+        
         readinessProbe:
           httpGet:
             path: /WeatherForecast
