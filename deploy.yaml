@@ -1,4 +1,3 @@
-
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -24,24 +23,21 @@ spec:
       - name: shop-api
         image: shop-api
         imagePullPolicy: IfNotPresent
-      imagePullSecrets:
-        - name: regcred
       # pull image from remote server ? 
         env:
           # it should be "ConnectionStrings:DefaultConnection" 
           # For .Net Core, the current (ugly) workaround is to use double underscores
           # https://github.com/kubernetes/kubernetes/issues/53201 
-          - name: ConnectionStrings__DefaultConnection
+          - name: ConnectionStrings__StoreConnection
             valueFrom:
               secretKeyRef:
-                name: user-pass
-                key: store-connectionstring
+                name: data-configuration
+                key: database.store
           - name: ConnectionStrings__IdentityConnection
             valueFrom:
               secretKeyRef:
-                name: user-pass
-                key: identity-connectionstring
-        
+                name: data-configuration
+                key: database.identity
         readinessProbe:
           httpGet:
             path: /WeatherForecast
@@ -50,6 +46,8 @@ spec:
           httpGet:
             path: /WeatherForecast
             port: 5000
+      imagePullSecrets:
+        - name: regcred
 ---
 apiVersion: v1
 kind: Service

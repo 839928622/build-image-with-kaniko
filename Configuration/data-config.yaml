@@ -4,8 +4,8 @@ metadata:
   name: data-configuration
   namespace: default
 data:
-  database.store: "store connectionstring"
-  database.identity: "identity connectionstring"
+  database.store: "Data Source=mssqldb;Initial Catalog=Store;User ID=sa;Password=yourStrong(!)Password;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
+  database.identity: "Data Source=mssqldb;Initial Catalog=Identity;User ID=sa;Password=yourStrong(!)Password;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
   cloudinarysettings.cloudname: "dhmbxvlld"
   cloudinarysettings.apikey: "762965946552442"
   cloudinarysettings.apisecret: "ePXOkCyUz6Z5dPwZmzWIj_E-zrM"
