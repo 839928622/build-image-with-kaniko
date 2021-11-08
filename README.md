@@ -23,8 +23,8 @@ create secret \
 docker-registry regcred \
 --docker-server https://your.registry.url \
 --docker-username your_user_name \
--- docker-password your_password \
--- docker-email your_email_address
+--docker-password your_password \
+--docker-email your_email_address
 ```
 
 2 Store your  credentials  to jenkins secret text
