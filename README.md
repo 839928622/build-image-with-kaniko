@@ -11,7 +11,7 @@
 ## What is kaniko & Why kaniko?
 
 we can not easily access to docker deamon since Docker runtime support is removed in a future release(currently planned for the 1.22 release in late 2021) of Kubernetes,
-here is [kanilo](https://github.com/GoogleContainerTools/kaniko) come to save the day.kaniko is a tool to build container images from a Dockerfile, inside a container or Kubernetes cluster.
+here is [kaniko](https://github.com/GoogleContainerTools/kaniko) come to save the day.kaniko is a tool to build container images from a Dockerfile, inside a container or Kubernetes cluster.
 
 ## Quick Start
 
